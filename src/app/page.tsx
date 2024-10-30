@@ -75,6 +75,22 @@ function PushNotificationManager() {
     return <p>Push notifications are not supported in this browser.</p>
   }
 
+  function getNotification(){
+    Notification.requestPermission().then((result) => {
+      if (result === "granted") {
+        const notifTitle = 'Go get it';
+        const notifBody = `Created by no one.`;
+        const notifImg = `./favicon.ico`;
+        const options = {
+          body: notifBody,
+          icon: notifImg,
+        };
+        new Notification(notifTitle, options);
+        setTimeout(getNotification, 30000);
+      }
+  }
+)}
+
   return (
     <div>
       <h3>Push Notifications</h3>
@@ -96,6 +112,8 @@ function PushNotificationManager() {
           <button onClick={subscribeToPush}>Subscribe</button>
         </>
       )}
+      <br />
+      <button onClick={getNotification}>send Notification</button>
     </div>
   )
 }
