@@ -1,16 +1,16 @@
 "use server"
 
-import webpush from "web-push"
+import webpush, { PushSubscription } from "web-push"
 
 webpush.setVapidDetails(
-  "<mailto:your-email@example.com>",
+  "mailto:mail@example.com",
   process.env.NEXT_PUBLIC_VAPID_PUBLIC_KEY!,
   process.env.VAPID_PRIVATE_KEY!,
 )
 
-let subscription: PushSubscription | null = null
+let subscription: PushSubscriptionJSON | null = null
 
-export async function subscribeUser(sub: PushSubscription) {
+export const subscribeUser = async (sub: PushSubscriptionJSON) => {
   subscription = sub
   // In a production environment, you would want to store the subscription in a database
   // For example: await db.subscriptions.create({ data: sub })
@@ -31,13 +31,14 @@ export async function sendNotification(message: string) {
 
   try {
     await webpush.sendNotification(
-      subscription,
+      subscription as PushSubscription,
       JSON.stringify({
         title: "Test Notification",
         body: message,
         icon: "/icon.png",
       }),
     )
+
     return { success: true }
   } catch (error) {
     console.error("Error sending push notification:", error)

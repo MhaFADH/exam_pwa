@@ -4,7 +4,6 @@ import { useState, useEffect } from "react"
 import { subscribeUser, unsubscribeUser, sendNotification } from "./actions"
 
 function urlBase64ToUint8Array(base64String: string) {
-  console.log(base64String)
   const padding = "=".repeat((4 - (base64String.length % 4)) % 4)
   const base64 = (base64String + padding)
     .replace(/\\-/g, "+")
@@ -40,6 +39,10 @@ function PushNotificationManager() {
     })
     const sub = await registration.pushManager.getSubscription()
     setSubscription(sub)
+
+    if (sub) {
+      await subscribeUser(sub.toJSON())
+    }
   }
 
   async function subscribeToPush() {
@@ -51,7 +54,7 @@ function PushNotificationManager() {
       ),
     })
     setSubscription(sub)
-    await subscribeUser(sub)
+    await subscribeUser(sub.toJSON())
   }
 
   async function unsubscribeFromPush() {
