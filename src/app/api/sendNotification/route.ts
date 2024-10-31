@@ -9,9 +9,12 @@ webpush.setVapidDetails(
 )
 
 export async function POST(req: NextRequest) {
-  const msg: string | null = await req.json()
+  const { message, title }: { message: string | null; title: string | null } =
+    await req.json()
 
-  if (!msg) {
+  console.log(message)
+
+  if (!message) {
     return NextResponse.json(
       { success: false, error: "Message is required" },
       { status: 400 },
@@ -20,14 +23,12 @@ export async function POST(req: NextRequest) {
 
   const { sub } = JSON.parse(fs.readFileSync("subscription.json", "utf-8"))
 
-  console.log(sub)
-
   try {
     await webpush.sendNotification(
       sub as PushSubscription,
       JSON.stringify({
-        title: "Test Notification",
-        body: msg,
+        title,
+        body: message,
       }),
     )
 

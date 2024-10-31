@@ -1,5 +1,6 @@
 "use client"
 import { useAppContext } from "@/app/AppContext"
+import SubscribeButton from "@/components/SubscribeButton"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import {
@@ -11,8 +12,11 @@ import {
   CardTitle,
 } from "@/components/ui/card"
 import { Job } from "@/types"
+import axios from "axios"
 import { Briefcase, Calendar, DollarSign, MapPin } from "lucide-react"
 import Link from "next/link"
+
+axios.defaults.baseURL = process.env.NEXT_PUBLIC_API_URL
 
 type JobBoardProps = Job
 
@@ -76,7 +80,7 @@ const JobBoard = ({
             Voir plus
           </Link>
         </Button>
-        <Button className="flex-1 ml-4">Postuler maintenant</Button>
+        <SubscribeButton title="Postulation confirmée" message={title} />
       </CardFooter>
     </Card>
   )
