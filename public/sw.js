@@ -3,7 +3,6 @@ self.addEventListener("push", function (event) {
     const data = event.data.json()
     const options = {
       body: data.body,
-      icon: data.icon || "/icon.png",
       badge: "/badge.png",
       vibrate: [100, 50, 100],
       data: {
@@ -35,12 +34,12 @@ self.addEventListener("install", (event) => {
   )
 })
 
-self.addEventListener("activate", (event) => {
+self.addEventListener("activate", () => {
   console.log("Service worker activate event!")
 })
 
 // When there's an incoming fetch request, try and respond with a precached resource, otherwise fall back to the network
-self.addEventListener("fetch", (event) => {
+/*self.addEventListener("fetch", (event) => {
   console.log("Fetch intercepted for:", event.request.url)
   event.respondWith(
     caches.match(event.request).then((cachedResponse) => {
@@ -50,4 +49,33 @@ self.addEventListener("fetch", (event) => {
       return fetch(event.request)
     }),
   )
+})*/
+
+self.addEventListener("fetch", async (event) => {
+  const { request } = event
+
+  if (request.url.includes("/_next/static/")) {
+    event.respondWith(
+      caches.match(request).then((cachedResponse) => {
+        if (cachedResponse) {
+          return cachedResponse
+        }
+        return fetch(request).then((response) => {
+          return caches.open(cacheName).then((cache) => {
+            cache.put(request, response.clone())
+            return response
+          })
+        })
+      }),
+    )
+  } else {
+    event.respondWith(
+      caches.match(request).then((cachedResponse) => {
+        if (cachedResponse) {
+          return cachedResponse
+        }
+        return fetch(request)
+      }),
+    )
+  }
 })
