@@ -17,7 +17,7 @@ const Header = () => {
       </Button>
 
       <Button variant="outline" asChild>
-        <Link href="/create">Add Job</Link>
+        <Link href="/create">Ajouter un job</Link>
       </Button>
     </header>
   )
