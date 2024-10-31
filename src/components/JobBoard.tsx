@@ -26,7 +26,7 @@ export type JobBoardProps = {
   id: string
 }
 
-function JobBoard({
+const JobBoard = ({
   title,
   company,
   location,
@@ -35,9 +35,9 @@ function JobBoard({
   description,
   skills,
   id,
-}: JobBoardProps) {
+}: JobBoardProps) => {
   return (
-    <Card className="w-full max-w-md">
+    <Card className="w-full max-w-md flex flex-col">
       <CardHeader>
         <div className="flex justify-between items-start">
           <div>
@@ -49,7 +49,7 @@ function JobBoard({
           </Badge>
         </div>
       </CardHeader>
-      <CardContent className="space-y-4">
+      <CardContent className="space-y-4 grow">
         <div className="flex items-center space-x-2 text-sm text-muted-foreground">
           <MapPin size={16} />
           <span>{location}</span>
@@ -74,7 +74,7 @@ function JobBoard({
           ))}
         </div>
       </CardContent>
-      <CardFooter className="flex justify-between items-center">
+      <CardFooter className="flex justify-end">
         <Button variant="outline" className="flex items-center" asChild>
           <Link href={`/${id}`}>
             <Briefcase className="mr-2 h-4 w-4" />
@@ -118,7 +118,7 @@ export default function JobBoardOffers() {
   }, [jobs, setJobs])
 
   return (
-    <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+    <div className="flex flex-wrap gap-8 justify-center">
       {jobs.map((offer) => (
         <JobBoard key={offer.id} {...offer} />
       ))}
