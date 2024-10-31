@@ -1,7 +1,7 @@
 "use client"
-
 import { useState, useEffect } from "react"
 import { subscribeUser, unsubscribeUser, sendNotification } from "./actions"
+import JobBoard from "@/components/JobBoard"
 
 function urlBase64ToUint8Array(base64String: string) {
   const padding = "=".repeat((4 - (base64String.length % 4)) % 4)
@@ -78,21 +78,21 @@ function PushNotificationManager() {
     return <p>Push notifications are not supported in this browser.</p>
   }
 
-  function getNotification(){
+  function getNotification() {
     Notification.requestPermission().then((result) => {
       if (result === "granted") {
-        const notifTitle = 'Go get it';
-        const notifBody = `Created by no one.`;
-        const notifImg = `./favicon.ico`;
+        const notifTitle = "Go get it"
+        const notifBody = `Created by no one.`
+        const notifImg = `./favicon.ico`
         const options = {
           body: notifBody,
           icon: notifImg,
-        };
-        new Notification(notifTitle, options);
-        setTimeout(getNotification, 30000);
+        }
+        new Notification(notifTitle, options)
+        setTimeout(getNotification, 30000)
       }
+    })
   }
-)}
 
   return (
     <div>
@@ -115,6 +115,7 @@ function PushNotificationManager() {
           <button onClick={subscribeToPush}>Subscribe</button>
         </>
       )}
+      <JobBoard />
       <br />
       <button onClick={getNotification}>send Notification</button>
     </div>
