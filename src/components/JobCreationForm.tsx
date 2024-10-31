@@ -17,7 +17,9 @@ import { Form } from "@/components/ui/form"
 import { skillSchema } from "@/schemas"
 import { faker } from "@faker-js/faker/locale/fr"
 import { zodResolver } from "@hookform/resolvers/zod"
+import { useRouter } from "next/navigation"
 import { useForm } from "react-hook-form"
+import { toast } from "sonner"
 import { z } from "zod"
 
 const formSchema = z.object({
@@ -32,6 +34,7 @@ const formSchema = z.object({
 
 const JobCreationForm = () => {
   const { createJob } = useAppContext()
+  const router = useRouter()
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -45,6 +48,8 @@ const JobCreationForm = () => {
 
   const onSubmit = (data: z.infer<typeof formSchema>) => {
     createJob({ id: faker.string.uuid(), ...data })
+    toast("Job listing created successfully")
+    router.push("/")
   }
 
   return (
