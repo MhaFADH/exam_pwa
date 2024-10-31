@@ -4,7 +4,6 @@ import { subscribeUser, unsubscribeUser, sendNotification } from "./actions"
 import JobBoard from "@/components/JobBoard"
 
 function urlBase64ToUint8Array(base64String: string) {
-  console.log(base64String)
   const padding = "=".repeat((4 - (base64String.length % 4)) % 4)
   console.log(process.env.NEXT_PUBLIC_VAPID_PUBLIC_KEY)
   const base64 = (base64String + padding)
@@ -44,6 +43,10 @@ function PushNotificationManager() {
     })
     const sub = await registration.pushManager.getSubscription()
     setSubscription(sub)
+
+    if (sub) {
+      await subscribeUser(sub.toJSON())
+    }
   }
 
   async function subscribeToPush() {
@@ -55,7 +58,7 @@ function PushNotificationManager() {
       ),
     })
     setSubscription(sub)
-    await subscribeUser(sub)
+    await subscribeUser(sub.toJSON())
   }
 
   async function unsubscribeFromPush() {
@@ -73,6 +76,22 @@ function PushNotificationManager() {
 
   if (!isSupported) {
     return <p>Push notifications are not supported in this browser.</p>
+  }
+
+  function getNotification() {
+    Notification.requestPermission().then((result) => {
+      if (result === "granted") {
+        const notifTitle = "Go get it"
+        const notifBody = `Created by no one.`
+        const notifImg = `./favicon.ico`
+        const options = {
+          body: notifBody,
+          icon: notifImg,
+        }
+        new Notification(notifTitle, options)
+        setTimeout(getNotification, 30000)
+      }
+    })
   }
 
   return (
@@ -97,6 +116,8 @@ function PushNotificationManager() {
         </>
       )}
       <JobBoard />
+      <br />
+      <button onClick={getNotification}>send Notification</button>
     </div>
   )
 }
