@@ -105,7 +105,7 @@ const SelectFrameworks = ({ onItemsChange }: Props) => {
               ))}
             </div>
           ) : (
-            "Select items..."
+            "Choisissez un tag..."
           )}
         </Button>
       </PopoverTrigger>
