@@ -57,7 +57,12 @@ const JobBoardDetails = ({ jobId }: Props) => {
           </div>
           <div className="flex items-center space-x-2 text-sm">
             <DollarSign size={18} />
-            <span>{job.salary}</span>
+            <span>
+              {new Intl.NumberFormat("fr-FR", {
+                style: "currency",
+                currency: "EUR",
+              }).format(job.salary)}
+            </span>
           </div>
           <div className="flex items-center space-x-2 text-sm">
             <Calendar size={18} />
