@@ -1,8 +1,9 @@
 "use client"
 
 import { useEffect, useState } from "react"
-import { sendNotification, subscribeUser, unsubscribeUser } from "./actions"
+import axios from "axios"
 
+axios.defaults.baseURL = "https://localhost:3000/api"
 function urlBase64ToUint8Array(base64String: string) {
   const padding = "=".repeat((4 - (base64String.length % 4)) % 4)
   console.log(process.env.NEXT_PUBLIC_VAPID_PUBLIC_KEY)
@@ -45,7 +46,7 @@ function PushNotificationManager() {
     setSubscription(sub)
 
     if (sub) {
-      await subscribeUser(sub.toJSON())
+      await axios.post("/subscribe", { sub: sub.toJSON() })
     }
   }
 
@@ -58,18 +59,19 @@ function PushNotificationManager() {
       ),
     })
     setSubscription(sub)
-    await subscribeUser(sub.toJSON())
+    axios.post("/subscribe", { sub: sub.toJSON() })
+    //await subscribeUser(sub.toJSON())
   }
 
   async function unsubscribeFromPush() {
     await subscription?.unsubscribe()
     setSubscription(null)
-    await unsubscribeUser()
+    await axios.get("/unsubscribe")
   }
 
   async function sendTestNotification() {
     if (subscription) {
-      await sendNotification(message)
+      await axios.post("/sendNotification", { message })
       setMessage("")
     }
   }
@@ -78,21 +80,21 @@ function PushNotificationManager() {
     return <p>Push notifications are not supported in this browser.</p>
   }
 
-  function getNotification(){
+  function getNotification() {
     Notification.requestPermission().then((result) => {
       if (result === "granted") {
-        const notifTitle = 'Go get it';
-        const notifBody = `Created by no one.`;
-        const notifImg = `./favicon.ico`;
+        const notifTitle = "Go get it"
+        const notifBody = `Created by no one.`
+        const notifImg = `./favicon.ico`
         const options = {
           body: notifBody,
           icon: notifImg,
-        };
-        new Notification(notifTitle, options);
-        setTimeout(getNotification, 30000);
+        }
+        new Notification(notifTitle, options)
+        setTimeout(getNotification, 30000)
       }
+    })
   }
-)}
 
   return (
     <div>
