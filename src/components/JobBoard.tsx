@@ -46,7 +46,12 @@ const JobBoard = ({
         </div>
         <div className="flex items-center space-x-2 text-sm text-muted-foreground">
           <DollarSign size={16} />
-          <span>{salary}</span>
+          <span>
+            {new Intl.NumberFormat("fr-FR", {
+              style: "currency",
+              currency: "EUR",
+            }).format(salary)}
+          </span>
         </div>
         <div className="flex items-center space-x-2 text-sm text-muted-foreground">
           <Calendar size={16} />
