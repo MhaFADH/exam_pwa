@@ -58,7 +58,11 @@ const JobCreationForm = () => {
         ...data,
         startDate: data.startDate.toString(),
       })
+<<<<<<< HEAD
       toast("Job listing created successfully")
+=======
+      toast("Création réussie de l'offre d'emploi")
+>>>>>>> main
       router.push("/")
     } catch (error) {
       console.error(error)
@@ -68,9 +72,9 @@ const JobCreationForm = () => {
   return (
     <Card className="max-w-[600px] w-full h-fit">
       <CardHeader>
-        <CardTitle>Create New Job Listing</CardTitle>
+        <CardTitle>Créer une nouvelle liste d&apos;emplois</CardTitle>
         <CardDescription>
-          Fill in the details for the new job position.
+          Complétez les détails du nouveau poste.
         </CardDescription>
       </CardHeader>
       <CardContent>
@@ -79,17 +83,25 @@ const JobCreationForm = () => {
             onSubmit={form.handleSubmit(onSubmit)}
             className="flex flex-col gap-4"
           >
-            <InputField control={form.control} name="title" label="Job Title" />
-            <InputField control={form.control} name="company" label="Company" />
+            <InputField
+              control={form.control}
+              name="title"
+              label="Titre du job"
+            />
+            <InputField
+              control={form.control}
+              name="company"
+              label="Entreprise"
+            />
             <InputField
               control={form.control}
               name="location"
-              label="Location"
+              label="Localisation"
             />
             <InputField
               control={form.control}
               name="salary"
-              label="Salary"
+              label="Salaire"
               type="number"
             />
             <DateInput name="startDate" label="Date" form={form} />
@@ -97,7 +109,7 @@ const JobCreationForm = () => {
             <InputField
               control={form.control}
               name="description"
-              label="Job Description"
+              label="Description du job"
             />
             <CustomInput form={form} name="skills" label="Skills">
               <SelectFrameworks
@@ -116,7 +128,7 @@ const JobCreationForm = () => {
               className=""
               type="submit"
             >
-              Create Job Listing
+              Création d&apos;un job
             </SubscribeButton>
           </form>
         </Form>
