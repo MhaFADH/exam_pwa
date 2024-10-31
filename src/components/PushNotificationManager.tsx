@@ -1,8 +1,8 @@
 "use client"
-
 import { useEffect, useState } from "react"
-import { sendNotification, subscribeUser, unsubscribeUser } from "@/app/actions"
+import axios from "axios"
 
+axios.defaults.baseURL = process.env.API_BASE_URL
 function urlBase64ToUint8Array(base64String: string) {
   const padding = "=".repeat((4 - (base64String.length % 4)) % 4)
   console.log(process.env.NEXT_PUBLIC_VAPID_PUBLIC_KEY)
@@ -45,7 +45,7 @@ const PushNotificationManager = () => {
     setSubscription(sub)
 
     if (sub) {
-      await subscribeUser(sub.toJSON())
+      await axios.post("/subscribe", { sub: sub.toJSON() })
     }
   }
 
@@ -58,18 +58,19 @@ const PushNotificationManager = () => {
       ),
     })
     setSubscription(sub)
-    await subscribeUser(sub.toJSON())
+    axios.post("/subscribe", { sub: sub.toJSON() })
+    //await subscribeUser(sub.toJSON())
   }
 
   async function unsubscribeFromPush() {
     await subscription?.unsubscribe()
     setSubscription(null)
-    await unsubscribeUser()
+    await axios.get("/unsubscribe")
   }
 
   async function sendTestNotification() {
     if (subscription) {
-      await sendNotification(message)
+      await axios.post("/sendNotification", { message })
       setMessage("")
     }
   }
@@ -95,31 +96,28 @@ const PushNotificationManager = () => {
   }
 
   return (
-    <>
-      <div>
-        <h3>Push Notifications</h3>
-        {subscription ? (
-          <>
-            <p>You are subscribed to push notifications.</p>
-            <button onClick={unsubscribeFromPush}>Unsubscribe</button>
-            <input
-              type="text"
-              placeholder="Enter notification message"
-              value={message}
-              onChange={(e) => setMessage(e.target.value)}
-            />
-            <button onClick={sendTestNotification}>Send Test</button>
-          </>
-        ) : (
-          <>
-            <p>You are not subscribed to push notifications.</p>
-            <button onClick={subscribeToPush}>Subscribe</button>
-          </>
-        )}
-        <br />
-        <button onClick={getNotification}>send Notification</button>
-      </div>
-    </>
+    <div>
+      <h3>Push Notifications</h3>
+      {subscription ? (
+        <>
+          <p>You are subscribed to push notifications.</p>
+          <button onClick={unsubscribeFromPush}>Unsubscribe</button>
+          <input
+            type="text"
+            placeholder="Enter notification message"
+            value={message}
+            onChange={(e) => setMessage(e.target.value)}
+          />
+          <button onClick={sendTestNotification}>Send Test</button>
+        </>
+      ) : (
+        <>
+          <p>You are not subscribed to push notifications.</p>
+          <button onClick={subscribeToPush}>Subscribe</button>
+        </>
+      )}
+      <button onClick={getNotification}>send Notification</button>
+    </div>
   )
 }
 
