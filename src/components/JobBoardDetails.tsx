@@ -66,9 +66,7 @@ const JobBoardDetails = ({ jobId }: Props) => {
           </div>
           <div className="flex items-center space-x-2 text-sm">
             <Calendar size={18} />
-            <span>
-              Date de début : {job.startDate.toLocaleDateString("fr-FR")}
-            </span>
+            <span>Date de début : {job.startDate}</span>
           </div>
           <div className="flex items-center space-x-2 text-sm">
             <Clock size={18} />

@@ -1,7 +1,5 @@
 "use client"
-import { items } from "@/components/SelectFrameworks"
 import { Job } from "@/types"
-import { faker } from "@faker-js/faker/locale/fr"
 import {
   createContext,
   ReactNode,
@@ -57,27 +55,13 @@ export const AppContextProvider = ({ children }: { children: ReactNode }) => {
   )
 
   useEffect(() => {
-    setJobs((prevJobs) => {
-      if (prevJobs.length > 0) {
-        return prevJobs
-      }
+    const getJobs = async () => {
+      const { data } = await axios.get<{ result: Job[] }>("/job")
 
-      const jobOffers = Array.from({ length: 6 }, () => ({
-        id: faker.string.uuid(),
-        title: faker.person.jobTitle(),
-        company: faker.company.name(),
-        location: `${faker.location.streetAddress()}, ${faker.location.country()} (${faker.helpers.arrayElement(["Télétravail", "Hybride", "Présentiel"])})`,
-        salary: faker.number.int({ min: 30000, max: 100000 }),
-        startDate: faker.date.soon(),
-        description: faker.lorem.sentences(2),
-        skills: faker.helpers.arrayElements(
-          items.map(({ label }) => label),
-          2,
-        ),
-      })) as unknown as Job[]
+      setJobs(data.result)
+    }
 
-      return jobOffers
-    })
+    getJobs()
   }, [setJobs])
 
   const subscribeToPush = async () => {
