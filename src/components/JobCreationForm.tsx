@@ -48,16 +48,16 @@ const JobCreationForm = () => {
 
   const onSubmit = (data: z.infer<typeof formSchema>) => {
     createJob({ id: faker.string.uuid(), ...data })
-    toast("Job listing created successfully")
+    toast("Création réussie de l'offre d'emploi")
     router.push("/")
   }
 
   return (
     <Card className="max-w-[600px] w-full h-fit">
       <CardHeader>
-        <CardTitle>Create New Job Listing</CardTitle>
+        <CardTitle>Créer une nouvelle liste d`&apos;`emplois</CardTitle>
         <CardDescription>
-          Fill in the details for the new job position.
+          Complétez les détails du nouveau poste.
         </CardDescription>
       </CardHeader>
       <CardContent>
@@ -103,7 +103,7 @@ const JobCreationForm = () => {
               className=""
               type="submit"
             >
-              Create Job Listing
+              Création d`&apos;`un job
             </SubscribeButton>
           </form>
         </Form>
