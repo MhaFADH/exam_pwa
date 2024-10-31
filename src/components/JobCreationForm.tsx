@@ -58,11 +58,7 @@ const JobCreationForm = () => {
         ...data,
         startDate: data.startDate.toString(),
       })
-<<<<<<< HEAD
-      toast("Job listing created successfully")
-=======
       toast("Création réussie de l'offre d'emploi")
->>>>>>> main
       router.push("/")
     } catch (error) {
       console.error(error)
