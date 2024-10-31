@@ -54,7 +54,11 @@ self.addEventListener("activate", () => {
 self.addEventListener("fetch", async (event) => {
   const { request } = event
 
-  if (request.url.includes("/_next/static/")) {
+  if (
+    request.url.includes("/_next/static/") ||
+    request.url.includes("/api/") ||
+    request.headers.get("accept")?.includes("text/html")
+  ) {
     event.respondWith(
       caches.match(request).then((cachedResponse) => {
         if (cachedResponse) {
