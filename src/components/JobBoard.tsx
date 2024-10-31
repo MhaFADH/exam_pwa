@@ -57,12 +57,11 @@ const JobBoard = ({
           <p className="text-sm text-muted-foreground">{description}</p>
         </div>
         <div className="flex flex-wrap gap-2 mt-4">
-          {/* {skills.map((skill, index) => (
+          {skills.map((skill, index) => (
             <Badge variant="outline" key={index}>
               {skill}
             </Badge>
-          ))} */}
-          <Badge variant="outline">{skills}</Badge>
+          ))}
         </div>
       </CardContent>
       <CardFooter className="flex justify-end">

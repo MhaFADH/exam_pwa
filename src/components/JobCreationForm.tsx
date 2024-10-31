@@ -1,8 +1,10 @@
 "use client"
 
 import { useAppContext } from "@/app/AppContext"
+import CustomInput from "@/components/CustomInput"
 import DateInput from "@/components/DateInput"
 import InputField from "@/components/InputField"
+import SelectFrameworks from "@/components/SelectFrameworks"
 import { Button } from "@/components/ui/button"
 import {
   Card,
@@ -25,7 +27,7 @@ const formSchema = z.object({
   salary: z.coerce.number().min(1),
   startDate: z.date(),
   description: z.string().min(1),
-  skills: skillSchema,
+  skills: z.array(skillSchema),
 })
 
 const JobCreationForm = () => {
@@ -79,8 +81,17 @@ const JobCreationForm = () => {
               name="description"
               label="Job Description"
             />
-            <InputField control={form.control} name="skills" label="Skills" />
+            <CustomInput form={form} name="skills" label="Skills">
+              <SelectFrameworks
+                onItemsChange={(items) => {
+                  const labels = items.map((item) => item.label)
+                  console.log(labels)
 
+                  form.setValue("skills", labels)
+                  form.clearErrors("skills")
+                }}
+              />
+            </CustomInput>
             <Button className="" type="submit">
               Create Job Listing
             </Button>

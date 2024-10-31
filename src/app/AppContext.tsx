@@ -1,4 +1,5 @@
 "use client"
+import { items } from "@/components/SelectFrameworks"
 import { Job } from "@/types"
 import { faker } from "@faker-js/faker/locale/fr"
 import {
@@ -40,23 +41,15 @@ export const AppContextProvider = ({ children }: { children: ReactNode }) => {
 
       const jobOffers = Array.from({ length: 6 }, () => ({
         id: faker.string.uuid(),
-        title: faker.word.words({ count: { min: 4, max: 10 } }),
+        title: faker.person.jobTitle(),
         company: faker.company.name(),
         location: `${faker.location.streetAddress()}, ${faker.location.country()} (${faker.helpers.arrayElement(["Télétravail", "Hybride", "Présentiel"])})`,
         salary: faker.number.int({ min: 30000, max: 100000 }),
         startDate: faker.date.soon(),
         description: faker.lorem.sentences(2),
         skills: faker.helpers.arrayElements(
-          [
-            "React",
-            "Node.js",
-            "TypeScript",
-            "MongoDB",
-            "Docker",
-            "GraphQL",
-            "Next.js",
-          ],
-          1,
+          items.map(({ label }) => label),
+          2,
         ),
       })) as unknown as Job[]
 

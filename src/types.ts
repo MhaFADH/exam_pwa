@@ -10,6 +10,6 @@ export type Job = {
   salary: number
   startDate: Date
   description: string
-  skills: Skill
+  skills: Skill[]
   id: string
 }
