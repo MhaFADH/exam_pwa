@@ -1,8 +1,8 @@
 "use client"
 
-import * as React from "react"
 import { useAppContext } from "@/app/AppContext"
 
+import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import {
   Card,
@@ -12,24 +12,25 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card"
-import { Badge } from "@/components/ui/badge"
 import {
-  MapPin,
-  DollarSign,
-  Calendar,
-  GraduationCap,
-  Clock,
   Building,
+  Calendar,
+  Clock,
+  DollarSign,
+  GraduationCap,
+  MapPin,
   Users,
 } from "lucide-react"
-import { JobBoardProps } from "@/components/JobBoard"
 
-export default function JobBoardDetails() {
-  const { jobs } = useAppContext() // Utilisation du hook personnalisé
+type Props = {
+  jobId: string
+}
 
-  const jobOffer: JobBoardProps | undefined = jobs?.[0]
+const JobBoardDetails = ({ jobId }: Props) => {
+  const { getJob } = useAppContext()
+  const job = getJob(jobId)
 
-  if (!jobOffer) {
+  if (!job) {
     return <p>Aucune offre d&apos;emploi sélectionnée.</p>
   }
 
@@ -38,11 +39,9 @@ export default function JobBoardDetails() {
       <CardHeader>
         <div className="flex justify-between items-start">
           <div>
-            <CardTitle className="text-3xl font-bold">
-              {jobOffer.title}
-            </CardTitle>
+            <CardTitle className="text-3xl font-bold">{job.title}</CardTitle>
             <CardDescription className="text-xl mt-2">
-              {jobOffer.company}
+              {job.company}
             </CardDescription>
           </div>
           <Badge variant="secondary" className="text-lg">
@@ -54,15 +53,15 @@ export default function JobBoardDetails() {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div className="flex items-center space-x-2 text-sm">
             <MapPin size={18} />
-            <span>{jobOffer.location}</span>
+            <span>{job.location}</span>
           </div>
           <div className="flex items-center space-x-2 text-sm">
             <DollarSign size={18} />
-            <span>{jobOffer.salary}</span>
+            <span>{job.salary}</span>
           </div>
           <div className="flex items-center space-x-2 text-sm">
             <Calendar size={18} />
-            <span>Date de début : {jobOffer.startDate}</span>
+            <span>Date de début : {job.startDate}</span>
           </div>
           <div className="flex items-center space-x-2 text-sm">
             <Clock size={18} />
@@ -80,9 +79,7 @@ export default function JobBoardDetails() {
 
         <div className="mt-6">
           <h3 className="text-lg font-semibold mb-2">Description du poste :</h3>
-          <p className="text-sm text-muted-foreground">
-            {jobOffer.description}
-          </p>
+          <p className="text-sm text-muted-foreground">{job.description}</p>
         </div>
 
         <div>
@@ -149,7 +146,7 @@ export default function JobBoardDetails() {
             Compétences techniques :
           </h3>
           <div className="flex flex-wrap gap-2 mt-2">
-            {jobOffer.skills.map((skill, index) => (
+            {job.skills.map((skill, index) => (
               <Badge variant="outline" key={index}>
                 {skill}
               </Badge>
@@ -174,13 +171,13 @@ export default function JobBoardDetails() {
           </ul>
         </div>
 
-        <div className="flex items-center space-x-2 text-sm">
-          <Building size={18} />
-          <span>
-            À propos de {jobOffer.company}: Leader dans le développement de
-            solutions SaaS innovantes, nous sommes une entreprise en pleine
-            croissance, offrant un environnement de travail stimulant et des
-            opportunités d&apos;évolution passionnantes.
+        <div className="flex items-center space-x-2">
+          <Building className="size-24" />
+          <span className="text-sm">
+            À propos de {job.company}: Leader dans le développement de solutions
+            SaaS innovantes, nous sommes une entreprise en pleine croissance,
+            offrant un environnement de travail stimulant et des opportunités
+            d&apos;évolution passionnantes.
           </span>
         </div>
       </CardContent>
@@ -190,3 +187,5 @@ export default function JobBoardDetails() {
     </Card>
   )
 }
+
+export default JobBoardDetails

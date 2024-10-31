@@ -1,5 +1,6 @@
 "use client"
-import * as React from "react"
+import { useAppContext } from "@/app/AppContext"
+import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import {
   Card,
@@ -9,11 +10,8 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card"
-import { Badge } from "@/components/ui/badge"
-import { Briefcase, MapPin, DollarSign, Calendar } from "lucide-react"
+import { Briefcase, Calendar, DollarSign, MapPin } from "lucide-react"
 import Link from "next/link"
-import { faker } from "@faker-js/faker"
-import { useAppContext } from "@/app/AppContext"
 
 export type JobBoardProps = {
   title: string
@@ -88,34 +86,7 @@ const JobBoard = ({
 }
 
 export default function JobBoardOffers() {
-  const { jobs, setJobs } = useAppContext()
-
-  React.useEffect(() => {
-    if (jobs.length === 0) {
-      const jobOffers = Array.from({ length: 6 }, () => ({
-        id: faker.string.uuid(),
-        title: faker.name.jobTitle(),
-        company: faker.company.name(),
-        location: `${faker.address.city()}, ${faker.address.country()} (${faker.helpers.arrayElement(["Télétravail", "Hybride", "Présentiel"])})`,
-        salary: `${faker.number.int({ min: 30000, max: 70000 })} € - ${faker.number.int({ min: 70000, max: 100000 })} € par an`,
-        startDate: faker.date.soon().toLocaleDateString("fr-FR"),
-        description: faker.lorem.sentences(2),
-        skills: faker.helpers.arrayElements(
-          [
-            "React",
-            "Node.js",
-            "TypeScript",
-            "MongoDB",
-            "Docker",
-            "GraphQL",
-            "Next.js",
-          ],
-          4,
-        ),
-      }))
-      setJobs(jobOffers)
-    }
-  }, [jobs, setJobs])
+  const { jobs } = useAppContext()
 
   return (
     <div className="flex flex-wrap gap-8 justify-center">
