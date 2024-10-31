@@ -2,7 +2,8 @@
 import { useEffect, useState } from "react"
 import axios from "axios"
 
-axios.defaults.baseURL = process.env.API_BASE_URL
+axios.defaults.baseURL = process.env.NEXT_PUBLIC_API_URL
+
 function urlBase64ToUint8Array(base64String: string) {
   const padding = "=".repeat((4 - (base64String.length % 4)) % 4)
   console.log(process.env.NEXT_PUBLIC_VAPID_PUBLIC_KEY)

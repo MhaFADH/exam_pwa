@@ -4,6 +4,7 @@ import fs from "fs"
 
 export async function POST(req: NextRequest) {
   const sub: PushSubscriptionJSON | null = await req.json()
+  console.log("hello")
 
   if (!sub) {
     return NextResponse.json(

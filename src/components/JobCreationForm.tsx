@@ -5,7 +5,7 @@ import CustomInput from "@/components/CustomInput"
 import DateInput from "@/components/DateInput"
 import InputField from "@/components/InputField"
 import SelectFrameworks from "@/components/SelectFrameworks"
-import { Button } from "@/components/ui/button"
+import SubscribeButton from "@/components/SubscribeButton"
 import {
   Card,
   CardContent,
@@ -97,9 +97,14 @@ const JobCreationForm = () => {
                 }}
               />
             </CustomInput>
-            <Button className="" type="submit">
+            <SubscribeButton
+              title="Nouveau job"
+              message="Créer avec success"
+              className=""
+              type="submit"
+            >
               Create Job Listing
-            </Button>
+            </SubscribeButton>
           </form>
         </Form>
       </CardContent>
