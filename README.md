@@ -1,5 +1,3 @@
-Bien sûr ! Voici un modèle de `README.md` pour ton application Next.js, React, et TypeScript qui fonctionne en tant que Progressive Web App (PWA).
-
 ---
 
 # MyJobBoard
