@@ -1,9 +1,9 @@
-import JobCreationForm from "@/components/JobCreationForm"
+import JobBoardOffers from "@/components/JobBoard"
 
 const Page = () => {
   return (
     <div className="flex items-center justify-center grow">
-      <JobCreationForm />
+      <JobBoardOffers />
     </div>
   )
 }

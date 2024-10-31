@@ -1,6 +1,7 @@
 import type { Metadata } from "next"
 import "./globals.css"
 import Header from "@/components/Header"
+import { AppContextProvider } from "@/app/AppContext"
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -15,8 +16,10 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className="flex min-h-dvh flex-col">
-        <Header />
-        <main className="flex grow px-4">{children}</main>
+        <AppContextProvider>
+          <Header />
+          <main className="flex grow px-4">{children}</main>
+        </AppContextProvider>
       </body>
     </html>
   )
