@@ -6,13 +6,11 @@ axios.defaults.baseURL = process.env.NEXT_PUBLIC_API_URL
 
 function urlBase64ToUint8Array(base64String: string) {
   const padding = "=".repeat((4 - (base64String.length % 4)) % 4)
-  console.log(process.env.NEXT_PUBLIC_VAPID_PUBLIC_KEY)
+
   const base64 = (base64String + padding)
     .replace(/-/g, "+")
     .replace(/_/g, "/")
     .replace(/\s/g, "")
-
-  console.log(base64)
 
   const rawData = window.atob(base64)
   const outputArray = new Uint8Array(rawData.length)

@@ -107,11 +107,10 @@ const JobCreationForm = () => {
               name="description"
               label="Description du job"
             />
-            <CustomInput form={form} name="skills" label="Skills">
+            <CustomInput form={form} name="skills" label="Compétences">
               <SelectFrameworks
                 onItemsChange={(items) => {
                   const labels = items.map((item) => item.label)
-                  console.log(labels)
 
                   form.setValue("skills", labels)
                   form.clearErrors("skills")

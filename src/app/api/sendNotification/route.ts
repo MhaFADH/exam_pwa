@@ -12,8 +12,6 @@ export async function POST(req: NextRequest) {
   const { message, title }: { message: string | null; title: string | null } =
     await req.json()
 
-  console.log(message)
-
   if (!message) {
     return NextResponse.json(
       { success: false, error: "Message is required" },
