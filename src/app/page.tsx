@@ -1,8 +1,9 @@
 "use client"
-import { useState, useEffect } from "react"
-import { subscribeUser, unsubscribeUser, sendNotification } from "./actions"
+import { useEffect, useState } from "react"
+import axios from "axios"
 import JobBoard from "@/components/JobBoard"
 
+axios.defaults.baseURL = process.env.API_BASE_URL
 function urlBase64ToUint8Array(base64String: string) {
   const padding = "=".repeat((4 - (base64String.length % 4)) % 4)
   console.log(process.env.NEXT_PUBLIC_VAPID_PUBLIC_KEY)
@@ -45,7 +46,7 @@ function PushNotificationManager() {
     setSubscription(sub)
 
     if (sub) {
-      await subscribeUser(sub.toJSON())
+      await axios.post("/subscribe", { sub: sub.toJSON() })
     }
   }
 
@@ -58,18 +59,19 @@ function PushNotificationManager() {
       ),
     })
     setSubscription(sub)
-    await subscribeUser(sub.toJSON())
+    axios.post("/subscribe", { sub: sub.toJSON() })
+    //await subscribeUser(sub.toJSON())
   }
 
   async function unsubscribeFromPush() {
     await subscription?.unsubscribe()
     setSubscription(null)
-    await unsubscribeUser()
+    await axios.get("/unsubscribe")
   }
 
   async function sendTestNotification() {
     if (subscription) {
-      await sendNotification(message)
+      await axios.post("/sendNotification", { message })
       setMessage("")
     }
   }
