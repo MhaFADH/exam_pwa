@@ -1,9 +1,9 @@
 "use client"
-
 import { useEffect, useState } from "react"
 import axios from "axios"
+import JobBoard from "@/components/JobBoard"
 
-axios.defaults.baseURL = "https://localhost:3000/api"
+axios.defaults.baseURL = process.env.API_BASE_URL
 function urlBase64ToUint8Array(base64String: string) {
   const padding = "=".repeat((4 - (base64String.length % 4)) % 4)
   console.log(process.env.NEXT_PUBLIC_VAPID_PUBLIC_KEY)
@@ -117,6 +117,7 @@ function PushNotificationManager() {
           <button onClick={subscribeToPush}>Subscribe</button>
         </>
       )}
+      <JobBoard />
       <br />
       <button onClick={getNotification}>send Notification</button>
     </div>
