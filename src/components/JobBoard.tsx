@@ -10,19 +10,11 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card"
+import { Job } from "@/types"
 import { Briefcase, Calendar, DollarSign, MapPin } from "lucide-react"
 import Link from "next/link"
 
-export type JobBoardProps = {
-  title: string
-  company: string
-  location: string
-  salary: string
-  startDate: string
-  description: string
-  skills: string[]
-  id: string
-}
+type JobBoardProps = Job
 
 const JobBoard = ({
   title,
@@ -58,18 +50,19 @@ const JobBoard = ({
         </div>
         <div className="flex items-center space-x-2 text-sm text-muted-foreground">
           <Calendar size={16} />
-          <span>Date de début : {startDate}</span>
+          <span>Date de début : {startDate.toLocaleDateString("fr-FR")}</span>
         </div>
         <div className="mt-4">
           <h3 className="font-semibold mb-2">Description du poste :</h3>
           <p className="text-sm text-muted-foreground">{description}</p>
         </div>
         <div className="flex flex-wrap gap-2 mt-4">
-          {skills.map((skill, index) => (
+          {/* {skills.map((skill, index) => (
             <Badge variant="outline" key={index}>
               {skill}
             </Badge>
-          ))}
+          ))} */}
+          <Badge variant="outline">{skills}</Badge>
         </div>
       </CardContent>
       <CardFooter className="flex justify-end">

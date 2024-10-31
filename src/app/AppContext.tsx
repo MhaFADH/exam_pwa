@@ -1,5 +1,5 @@
 "use client"
-import { JobBoardProps } from "@/components/JobBoard"
+import { Job } from "@/types"
 import { faker } from "@faker-js/faker/locale/fr"
 import {
   createContext,
@@ -11,19 +11,25 @@ import {
 } from "react"
 
 type AppContextType = {
-  jobs: JobBoardProps[]
-  setJobs: (jobs: JobBoardProps[]) => void
-  getJob: (jobId: string) => JobBoardProps | undefined
+  jobs: Job[]
+  setJobs: (jobs: Job[]) => void
+  getJob: (jobId: string) => Job | undefined
+  createJob: (job: Job) => void
 }
 
 const AppContext = createContext<AppContextType>({} as AppContextType)
 
 export const AppContextProvider = ({ children }: { children: ReactNode }) => {
-  const [jobs, setJobs] = useState<JobBoardProps[]>([])
+  const [jobs, setJobs] = useState<Job[]>([])
 
   const getJob = useCallback(
     (jobId: string) => jobs.find((job) => job.id === jobId),
     [jobs],
+  )
+
+  const createJob = useCallback(
+    (job: Job) => setJobs((prevJobs) => [...prevJobs, job]),
+    [setJobs],
   )
 
   useEffect(() => {
@@ -37,8 +43,8 @@ export const AppContextProvider = ({ children }: { children: ReactNode }) => {
         title: faker.word.words({ count: { min: 4, max: 10 } }),
         company: faker.company.name(),
         location: `${faker.location.streetAddress()}, ${faker.location.country()} (${faker.helpers.arrayElement(["Télétravail", "Hybride", "Présentiel"])})`,
-        salary: `${faker.number.int({ min: 30000, max: 70000 })} € - ${faker.number.int({ min: 70000, max: 100000 })} € par an`,
-        startDate: faker.date.soon().toLocaleDateString("fr-FR"),
+        salary: faker.number.int({ min: 30000, max: 100000 }),
+        startDate: faker.date.soon(),
         description: faker.lorem.sentences(2),
         skills: faker.helpers.arrayElements(
           [
@@ -50,16 +56,16 @@ export const AppContextProvider = ({ children }: { children: ReactNode }) => {
             "GraphQL",
             "Next.js",
           ],
-          4,
+          1,
         ),
-      }))
+      })) as unknown as Job[]
 
       return jobOffers
     })
   }, [setJobs])
 
   return (
-    <AppContext.Provider value={{ jobs, setJobs, getJob }}>
+    <AppContext.Provider value={{ jobs, setJobs, getJob, createJob }}>
       {children}
     </AppContext.Provider>
   )

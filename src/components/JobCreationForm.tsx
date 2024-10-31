@@ -1,5 +1,6 @@
 "use client"
 
+import { useAppContext } from "@/app/AppContext"
 import DateInput from "@/components/DateInput"
 import InputField from "@/components/InputField"
 import { Button } from "@/components/ui/button"
@@ -11,6 +12,8 @@ import {
   CardTitle,
 } from "@/components/ui/card"
 import { Form } from "@/components/ui/form"
+import { skillSchema } from "@/schemas"
+import { faker } from "@faker-js/faker/locale/fr"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
 import { z } from "zod"
@@ -22,10 +25,11 @@ const formSchema = z.object({
   salary: z.coerce.number().min(1),
   startDate: z.date(),
   description: z.string().min(1),
-  skills: z.string().min(1),
+  skills: skillSchema,
 })
 
 const JobCreationForm = () => {
+  const { createJob } = useAppContext()
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -34,15 +38,12 @@ const JobCreationForm = () => {
       location: "",
       salary: 0,
       description: "",
-      skills: "",
     },
   })
 
   const onSubmit = (data: z.infer<typeof formSchema>) => {
-    console.log(data)
+    createJob({ id: faker.string.uuid(), ...data })
   }
-
-  console.log(form.formState.errors)
 
   return (
     <Card className="max-w-[600px] w-full h-fit">
