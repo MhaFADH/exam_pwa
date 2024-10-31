@@ -80,7 +80,13 @@ const JobBoard = ({
             Voir plus
           </Link>
         </Button>
-        <SubscribeButton title="Postulation confirmée" message={title} />
+        <SubscribeButton
+          title="Postulation confirmée"
+          message={title}
+          className="flex-1 ml-4"
+        >
+          Postuler maintenant
+        </SubscribeButton>
       </CardFooter>
     </Card>
   )
