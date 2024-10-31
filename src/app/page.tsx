@@ -1,7 +1,7 @@
 "use client"
-
 import { useState, useEffect } from "react"
 import { subscribeUser, unsubscribeUser, sendNotification } from "./actions"
+import JobBoard from "@/components/JobBoard"
 
 function urlBase64ToUint8Array(base64String: string) {
   console.log(base64String)
@@ -96,6 +96,7 @@ function PushNotificationManager() {
           <button onClick={subscribeToPush}>Subscribe</button>
         </>
       )}
+      <JobBoard />
     </div>
   )
 }
