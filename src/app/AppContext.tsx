@@ -11,6 +11,29 @@ import {
   useState,
 } from "react"
 
+import axios from "axios"
+
+axios.defaults.baseURL = process.env.NEXT_PUBLIC_API_URL
+
+const urlBase64ToUint8Array = (base64String: string) => {
+  const padding = "=".repeat((4 - (base64String.length % 4)) % 4)
+  console.log(process.env.NEXT_PUBLIC_VAPID_PUBLIC_KEY)
+  const base64 = (base64String + padding)
+    .replace(/-/g, "+")
+    .replace(/_/g, "/")
+    .replace(/\s/g, "")
+
+  console.log(base64)
+
+  const rawData = window.atob(base64)
+  const outputArray = new Uint8Array(rawData.length)
+
+  for (let i = 0; i < rawData.length; ++i) {
+    outputArray[i] = rawData.charCodeAt(i)
+  }
+  return outputArray
+}
+
 type AppContextType = {
   jobs: Job[]
   setJobs: (jobs: Job[]) => void
@@ -56,6 +79,46 @@ export const AppContextProvider = ({ children }: { children: ReactNode }) => {
       return jobOffers
     })
   }, [setJobs])
+
+  const subscribeToPush = async () => {
+    try {
+      const registration = await navigator.serviceWorker.ready
+      const sub = await registration.pushManager.subscribe({
+        userVisibleOnly: true,
+        applicationServerKey: urlBase64ToUint8Array(
+          process.env.NEXT_PUBLIC_VAPID_PUBLIC_KEY!,
+        ),
+      })
+
+      await axios.post("/subscribe", { sub: sub.toJSON() })
+    } catch (error) {
+      console.error(error)
+    }
+
+    //await subscribeUser(sub.toJSON())
+  }
+
+  async function registerServiceWorker() {
+    const registration = await navigator.serviceWorker.register("/sw.js", {
+      scope: "/",
+      updateViaCache: "none",
+    })
+    const sub = await registration.pushManager.getSubscription()
+
+    if (sub) {
+      await axios.post("/subscribe", { sub: sub.toJSON() })
+    }
+  }
+
+  useEffect(() => {
+    if ("serviceWorker" in navigator && "PushManager" in window) {
+      registerServiceWorker()
+    }
+  }, [])
+
+  useEffect(() => {
+    subscribeToPush()
+  }, [])
 
   return (
     <AppContext.Provider value={{ jobs, setJobs, getJob, createJob }}>
