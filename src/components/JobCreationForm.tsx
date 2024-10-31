@@ -17,10 +17,13 @@ import { Form } from "@/components/ui/form"
 import { skillSchema } from "@/schemas"
 import { faker } from "@faker-js/faker/locale/fr"
 import { zodResolver } from "@hookform/resolvers/zod"
+import axios from "axios"
 import { useRouter } from "next/navigation"
 import { useForm } from "react-hook-form"
 import { toast } from "sonner"
 import { z } from "zod"
+
+axios.defaults.baseURL = process.env.NEXT_PUBLIC_API_URL
 
 const formSchema = z.object({
   title: z.string().min(1),
@@ -46,10 +49,20 @@ const JobCreationForm = () => {
     },
   })
 
-  const onSubmit = (data: z.infer<typeof formSchema>) => {
-    createJob({ id: faker.string.uuid(), ...data })
-    toast("Job listing created successfully")
-    router.push("/")
+  const onSubmit = async (data: z.infer<typeof formSchema>) => {
+    try {
+      await axios.post("/job", data)
+
+      createJob({
+        id: faker.string.uuid(),
+        ...data,
+        startDate: data.startDate.toString(),
+      })
+      toast("Job listing created successfully")
+      router.push("/")
+    } catch (error) {
+      console.error(error)
+    }
   }
 
   return (

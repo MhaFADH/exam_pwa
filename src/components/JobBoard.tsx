@@ -59,7 +59,7 @@ const JobBoard = ({
         </div>
         <div className="flex items-center space-x-2 text-sm text-muted-foreground">
           <Calendar size={16} />
-          <span>Date de début : {startDate.toLocaleDateString("fr-FR")}</span>
+          <span>Date de début : {startDate}</span>
         </div>
         <div className="mt-4">
           <h3 className="font-semibold mb-2">Description du poste :</h3>
